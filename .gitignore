@@ -1,12 +1,12 @@
 # Dependencies
-/node_modules
-/domestic-services-backend/node_modules
-/domestic-services-frontend/node_modules
-
+node_modules/
+home_services_backend/node_modules/
+home_services_frontend/node_modules/
 
 # Env files
 .env
-domestic-services-backend/.env
+home_services_backend/.env
+home_services_frontend/.env
 
 # Logs
 npm-debug.log*
@@ -14,11 +14,10 @@ yarn-debug.log*
 yarn-error.log*
 
 # Build output
-/dist
-/out
+dist/
+out/
+build/
 
 # Misc
 .DS_Store
-
 TODO.md
-

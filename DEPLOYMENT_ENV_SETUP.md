@@ -5,8 +5,6 @@
 Make sure these environment variables are set in your Render dashboard:
 
 ```env
-# Database
-MONGO_URI=mongodb+srv://dharshancgm2005_db_user:CSoaoyEFftElB0A2@domestic-services.7xoi7co.mongodb.net/domestic-services?retryWrites=true&w=majority&appName=Domestic-services
 
 # JWT
 JWT_SECRET=your-super-secret-jwt-key-change-this-in-production
