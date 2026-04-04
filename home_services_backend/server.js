@@ -20,6 +20,7 @@ const app = express();
 app.use(cors({
   origin: [
     /^https:\/\/home-service-booking-app.*\.vercel\.app$/,
+    'https://home-service-booking-app-25sm.vercel.app',
     'https://domestic-services-vt.vercel.app',
     'http://localhost:3000', 
     'http://localhost:5173'
@@ -45,7 +46,7 @@ app.get('/', (req, res) => {
 
 // Health check endpoint
 app.get('/health', (req, res) => {
-  res.status(200).json({ status: 'OK', message: 'Server is running' });
+  res.status(200).json({ status: 'OK', message: 'Server is running', version: '1.0.1' });
 });
 
 // Routes
