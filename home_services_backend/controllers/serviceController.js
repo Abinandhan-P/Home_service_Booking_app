@@ -16,6 +16,10 @@ export const toggleServiceAvailability = async (req, res) => {
 // GET /api/services
 export const getServices = async (_req, res) => {
   try {
+    const dbName = Service.db.name;
+    const collectionName = Service.collection.name;
+    console.log(`📡 Fetching services from DB: ${dbName}, Collection: ${collectionName}`);
+    
     const items = await Service.find().sort({ createdAt: -1 });
     console.log(`getServices: found ${items.length} services`);
     if (items.length > 0) {
