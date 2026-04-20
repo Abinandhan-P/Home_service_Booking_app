@@ -242,33 +242,38 @@ export const updateBookingStatus = async (req, res) => {
       return res.status(404).json({ message: "Booking not found" });
     }
 
-    // Check if booking is expired (24 hours time limit for pending bookings)
+    // (Optional) Check if booking is expired - disabled for now to allow more flexible testing
+    /*
     if (booking.status === 'pending') {
       const bookingTime = new Date(booking.createdAt);
       const currentTime = new Date();
       const timeDiff = currentTime - bookingTime;
       const hoursDiff = timeDiff / (1000 * 60 * 60);
 
-      if (hoursDiff > 24) {
+      if (hoursDiff > 48) { // Increased to 48 hours if we want to keep it
         return res.status(400).json({
-          message: "Booking has expired. Cannot accept expired bookings.",
+          message: "Booking has expired. Cannot accept bookings older than 48 hours.",
           expired: true
         });
       }
     }
+    */
 
     const updateData = { status };
 
-    // Only allow workers to accept pending bookings
-    if (status === 'confirmed' && booking.status === 'pending') {
-      updateData.workerId = req.user.id;
-      updateData.acceptedAt = new Date();
-      console.log('Assigning worker to booking (confirmed):', req.user.id);
-    }
+    // Logic for workers accepting/starting a job
+    if ((status === 'confirmed' || status === 'in_progress') && (booking.status === 'pending' || booking.status === 'confirmed')) {
+      // Check if job is already assigned to someone else
+      if (booking.workerId && booking.workerId.toString() !== req.user.id.toString()) {
+        return res.status(400).json({ message: "This job has already been accepted by another worker." });
+      }
 
-    if (status === 'in_progress' && (booking.status === 'confirmed' || booking.status === 'pending')) {
       updateData.workerId = req.user.id;
-      console.log('Assigning worker to booking (in_progress):', req.user.id, 'Current status:', booking.status);
+      // Set acceptedAt if it hasn't been set yet
+      if (!booking.acceptedAt) {
+        updateData.acceptedAt = new Date();
+      }
+      console.log(`Assigning worker ${req.user.id} to booking (${status}). Current status: ${booking.status}`);
     }
 
     if (status === 'completed') {

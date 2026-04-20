@@ -79,7 +79,8 @@ const WorkerDashboard = () => {
       fetchBookings();
     } catch (error) {
       console.error('Failed to accept booking:', error);
-      toast.error('Failed to accept booking.');
+      const errorMessage = error.response?.data?.message || 'Failed to accept booking.';
+      toast.error(errorMessage);
     }
   };
 
